@@ -1,0 +1,28 @@
+@charset "utf-8";
+/* CSS Document */
+
+img#logo{height:250px; width:20%; float:left; border:1px solid red; margin:0px 0px 10px 0px;}
+img#topBar{height:250px; width:78%; border:1px solid green; float:right; margin:0px 0px 10px 0px;}
+div#categories{width:120px; height:300px; border:1px solid black; float:left; margin:10px 10px 0px 0px; list-style-type:none}
+img.product{width:250px; height:250px; float:left;}
+img.category{width:250px; height:250px; float:left;}
+img.productdetail{width:350px; height:350px; float:left; margin:10px 10px 10px 10px;}
+div#introduction{margin:20px 0px 0px 140px; list-style-type::none;}
+
+.menu{padding:0; list-style:none}
+.menu li{font-size:15px;display:inline}
+
+
+
+div#list{width:35%; font-size:15px; float:right; margin:0px 20px 0px 0px;}
+div#list ul{display:none;position:absolute;margin:-20px;background:white; list-style-type:none; border:1px solid black; float:left;}
+div#list:hover ul{display:block}
+
+
+
+ul.table{width:1200px;height:450px; margin:10px 10px 10px 10px; padding:0; list-style:none; overflow:auto}
+ul.table li{width:250px; height:280px; float:left; border:1px solid black; margin:10px 0px 0px 10px; list-style-type:none;}
+.clear{list-style-type: none; margin:0px 0px 0px px; clear:both}
+
+
+br.clear{clear:both;}
