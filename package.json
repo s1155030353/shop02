@@ -1,0 +1,22 @@
+{
+  "name": "shop02-ierg4210",
+  "version": "1.0.0",
+  "description": "IERG4210 Shop02",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ierg4210/shop02.git"
+  },
+  "keywords": [
+    "ierg4210"
+  ],
+  "author": "iamztb",
+  "license": "BSD",
+  "bugs": {
+    "url": "https://github.com/ierg4210/shop02/issues"
+  },
+  "homepage": "https://github.com/ierg4210/shop02"
+}
