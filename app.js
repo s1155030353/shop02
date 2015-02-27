@@ -13,7 +13,38 @@ app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
 // TODO: serve static files from the public folder
-app.use(express.static('public'))
+app.use(express.static('public'));
+
+
+
+/*
+app.get('/', function (req, res) {
+//        res.redirect('main.html')
+        res.render('main')
+})
+
+app.get('/main.html', function (req, res) {
+        res.render('main')
+})
+
+app.get('/game.html', function(req, res) {
+        res.render('game');
+});
+
+app.get('/video.html', function(req, res) {
+        res.render('video');
+});
+
+app.get('/music.html', function(req, res) {
+        res.render('music');
+});
+
+app.get("/product/:who", function(req, res) {
+        res.render('product/' + req.params.who);
+});
+*/
+
+
 
 // backend routers run first
 app.use('/admin/api', backEndAPIRouter);

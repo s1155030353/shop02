@@ -1,0 +1,54 @@
+<!--<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+<link href="css/main.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body>
+-->
+
+<img src="images/logo.jpg" id="logo">
+<img src="images/topbar.jpg" id="topBar">
+
+<div id="list">
+<a class="total">Shopping list&nbsp;&nbsp;&nbsp;Total:</a>
+<div id="cart">
+<a class="total">Shopping list&nbsp;&nbsp;&nbsp;Total:</a>
+<ul id="shop-list">
+  <li>Name      <input type="number" step="1" name="amount"/>      Price</li>
+</ul>
+</div>
+</div>
+
+<nav><!-- <nav> is a semantic tag! -->
+<ul class="menu">
+    <li><a href="/">Home</a>&nbsp;></li>
+    <li><a href="/category?catid={{prodcat.catid}}">{{prodcat.name}}</a>&nbsp;></li>
+    <li><a href="/product?pid={{prod.pid}}">{{prod.name}}</a>&nbsp;></li>
+</ul>
+</nav>
+
+<div id="categories">
+    <p>List of Categories:</p>
+    <ul>
+    {{#each cat}}
+        <li><a href="/category?catid={{catid}}">{{name}}</a></li>
+    {{/each}}
+    </ul>
+</div>
+
+<img src="images/{{prod.pid}}.jpg" class="productdetail">
+<li>
+<a class="clear">{{prod.name}}&nbsp;&nbsp;${{prod.price}}&nbsp;&nbsp;&nbsp;&nbsp;</a><button onclick="addproduct({{prod.pid}},1)">Add to cart</button>
+
+<div id="introduction">
+{{prod.description}}
+</div>
+<!--
+</body>
+<script type="text/javascript" src="lib/shopping.js"></script>
+</html>
+-->

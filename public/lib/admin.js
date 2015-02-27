@@ -41,6 +41,9 @@ function onSubmitHandler(e) {
 
 document.querySelector('#categoryNewPanel form').addEventListener('submit', onSubmitHandler);
 document.querySelector('#categoryEditPanel form').addEventListener('submit', onSubmitHandler);
-
+document.querySelector('#categoryRemovePanel form').addEventListener('submit', onSubmitHandler);
+//document.querySelector('#productNewPanel form').addEventListener('submit', onSubmitHandler);
+//document.querySelector('#productEditPanel form').addEventListener('submit', onSubmitHandler);
+document.querySelector('#productRemovePanel form').addEventListener('submit', onSubmitHandler);
 
 })();

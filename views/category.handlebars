@@ -1,0 +1,53 @@
+<!--<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+<link href="css/main.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body>
+-->
+
+<img src="images/logo.jpg" id="logo">
+<img src="images/topbar.jpg" id="topBar">
+
+<div id="list">
+<a class="total">Shopping list&nbsp;&nbsp;&nbsp;Total:</a>
+<div id="cart">
+<a class="total">Shopping list&nbsp;&nbsp;&nbsp;Total:</a>
+<ul id="shop-list">
+  <li>Name      <input type="number" step="1" name="amount"/>      Price</li>
+</ul>
+</div>
+</div>
+
+<nav><!-- <nav> is a semantic tag! -->
+<ul class="menu">
+    <li><a href="/">Home</a>&nbsp;></li>
+    <li><a href="/category?catid={{catid}}">{{name}}</a></li>
+</ul>
+</nav>
+
+<div id="categories">
+    <p>List of Categories:</p>
+    <ul>
+    {{#each cat}}
+        <li><a href="/category?catid={{catid}}">{{name}}</a></li>
+    {{/each}}
+    </ul>
+</div>
+
+<ul class="table">
+{{#each prod}}
+  <li><a href="/product?pid={{pid}}" target="_blank"><img src="images/{{pid}}.jpg" class="product"/>{{name}}</a>&nbsp;${{price}}&nbsp;<button onclick="addproduct({{pid}},1)">Add to cart</button></li>
+{{/each}}
+</ul>
+<p class="clear">Total: 3</p>
+
+<!--
+</body>
+<script type="text/javascript" src="lib/shopping.js"></script>
+</html>
+-->
