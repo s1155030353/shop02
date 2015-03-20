@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-export NODE_PATH=/Users/iamztb/Downloads/sample/shop/local-dev-env/lib/node_modules
-export NPM_CONFIG_PREFIX=/Users/iamztb/Downloads/sample/shop/local-dev-env
-export npm_config_prefix=/Users/iamztb/Downloads/sample/shop/local-dev-env
-exec /Users/iamztb/Downloads/sample/shop/local-dev-env/bin/node "$@"

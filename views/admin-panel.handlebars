@@ -2,6 +2,14 @@
 <article id="main">
 
 <section id="categoryPanel" class="panel">
+
+
+		<fieldset id="logout">
+			<form method="GET" action="/admin/logout">
+				<input type="submit" value="Log out" />
+			</form>
+		</fieldset>
+
 	<fieldset id="categoryNewPanel">
 		<legend>New Category</legend>
 		<form method="POST" action="/admin/api/cat/add">
@@ -141,7 +149,9 @@
 		</form>
 		</fieldset>
 
+
 </section>
+
 <div class="clear"></div>
 
 </article>

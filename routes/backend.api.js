@@ -5,15 +5,44 @@ var bodyParser = require('body-parser');
 var expressValidator = require('express-validator');
 var multer = require('multer');
 var fs = require('fs');
+var xssFilters = require('xss-filters');
+var session = require('express-session');
+var csp = require('content-security-policy');
+
 var pool = anyDB.createPool(config.dbURI, {
 	min: 2, max: 20
 });
+
 var inputPattern = {
 	name: /^[\w- ']+$/,
 	description: /^[\w- ',\r\n]+$/,
 	price: /^\d+(?:\.\d{1,2})?$/
 };
+
+var cspPolicy = {
+    'Content-Security-Policy': "default-src 'self' 127.0.0.1",
+    'X-Content-Security-Policy': "default-src 'self' 127.0.0.1",
+    'X-WebKit-CSP': "default-src 'self' 127.0.0.1",
+};
+
+var globalCSP = csp.getCSP(cspPolicy);
+
 var app = express.Router();
+
+app.use(globalCSP);
+
+app.use(session({
+//	store:new RedisStore({
+//        host:'127.0.0.1',
+//        port:'6379'
+//    }),
+	name: 'login',
+	secret: '04n4MY7jLXKlz3y17YdoSOR9o71gvH3R',
+	resave: false,
+	saveUninitialized: false,
+	cookie: { path: '/admin', maxAge: 1000*60*60*24*3, httpOnly: true }
+	})
+);
 
 // for parsing application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({extended:true}));
@@ -29,6 +58,12 @@ app.post('/cat/add', function (req, res) {
 	// put your input validations and/or sanitizations here
 	// Reference: https://www.npmjs.com/package/express-validator
 	// Reference: https://github.com/chriso/validator.js
+
+	if (!req.session.admin){
+		res.redirect('/admin/login');		
+		return;
+	}
+
 	req.checkBody('name', 'Invalid Category Name')
 		.isLength(1, 512)
 		.matches(inputPattern.name);
@@ -43,7 +78,7 @@ app.post('/cat/add', function (req, res) {
 	// (Prepared Statement := use ? as placeholder for values in sql statement; 
 	//   They'll automatically be replaced by the elements in next array)
 	pool.query('INSERT INTO categories (name) VALUES (?)', 
-		[req.body.name],
+		[xssFilters.inHTMLData(req.body.name)],
 		function (error, result) {
 			if (error) {
 				console.error(error);
@@ -60,6 +95,11 @@ app.post('/cat/add', function (req, res) {
 
 // URL expected: http://hostname/admin-api/cat/edit
 app.post('/cat/edit', function (req, res) {
+
+	if (!req.session.admin){
+		res.redirect('/admin/login');		
+		return;
+	}
 
 	// put your input validations and/or sanitizations here
 	// Reference: https://www.npmjs.com/package/express-validator
@@ -81,7 +121,7 @@ app.post('/cat/edit', function (req, res) {
 	// (Prepared Statement := use ? as placeholder for values in sql statement; 
 	//   They'll automatically be replaced by the elements in next array)
 	pool.query('UPDATE categories SET name = ? WHERE catid = ? LIMIT 1', 
-		[req.body.name, req.body.catid],
+		[xssFilters.inHTMLData(req.body.name), req.body.catid],
 		function (error, result) {
 			if (error) {
 				console.error(error);
@@ -106,6 +146,11 @@ app.post('/cat/edit', function (req, res) {
 // URL expected: http://hostname/admin-api/cat/remove
 app.post('/cat/remove', function (req, res) {
 
+	if (!req.session.admin){
+		res.redirect('/admin/login');		
+		return;
+	}
+
 	// put your input validations and/or sanitizations here
 	// Reference: https://www.npmjs.com/package/express-validator
 	// Reference: https://github.com/chriso/validator.js
@@ -125,8 +170,7 @@ app.post('/cat/remove', function (req, res) {
     pool.query('SELECT * FROM products WHERE catid = ? LIMIT 1',
     	[req.body.catid],
     	function (error, result){
-    		//console.log(result.affectedRows);
-    		if (result.affectedRows !== 0) {
+    		if (result.rowCount == 0) {
     			pool.query('DELETE FROM categories WHERE catid = ? LIMIT 1', 
 		            [req.body.catid],
 		            function (error, result) {
@@ -162,7 +206,12 @@ app.post('/cat/remove', function (req, res) {
 
 // URL expected: http://hostname/admin/api/prod/add
 app.post('/prod/add', function (req, res) {
-console.log(req);
+
+	if (!req.session.admin){
+		res.redirect('/admin/login');		
+		return;
+	}
+//console.log(req);
 	// put your input validations and/or sanitizations here
 	// Reference: https://www.npmjs.com/package/express-validator
 	// Reference: https://github.com/chriso/validator.js
@@ -179,8 +228,9 @@ console.log(req);
 	// manipulate the DB accordingly using prepared statement 
 	// (Prepared Statement := use ? as placeholder for values in sql statement; 
 	//   They'll automatically be replaced by the elements in next array)
-	pool.query('INSERT INTO products (catid, name, price, description) VALUES (' + req.body.catid + ",'" + req.body.name + "'," + req.body.price + ",'" + req.body.description + "')", 
-		[req.body.name],
+	//pool.query('INSERT INTO products (catid, name, price, description) VALUES (' + req.body.catid + ",'" + req.body.name + "'," + req.body.price + ",'" + req.body.description + "')", 
+		pool.query('INSERT INTO products (catid, name, price, description) VALUES (?, ?, ?, ?)',
+		[req.body.catid, xssFilters.inHTMLData(req.body.name), xssFilters.inHTMLData(req.body.price), xssFilters.inHTMLData(req.body.description)],
 		function (error, result) {
 			if (error) {
 				console.error(error);
@@ -197,6 +247,11 @@ console.log(req);
 
 // URL expected: http://hostname/admin-api/prod/edit
 app.post('/prod/edit', function (req, res) {
+
+	if (!req.session.admin){
+		res.redirect('/admin/login');		
+		return;
+	}
 
 	// put your input validations and/or sanitizations here
 	// Reference: https://www.npmjs.com/package/express-validator
@@ -227,7 +282,7 @@ app.post('/prod/edit', function (req, res) {
 	// (Prepared Statement := use ? as placeholder for values in sql statement; 
 	//   They'll automatically be replaced by the elements in next array)
 	pool.query('UPDATE products SET name = ?, description = ?, price = ? WHERE catid = ? AND pid = ? LIMIT 1', 
-		[req.body.name, req.body.description, req.body.price, req.body.catid, req.body.pid],
+		[xssFilters.inHTMLData(req.body.name), xssFilters.inHTMLData(req.body.description), xssFilters.inHTMLData(req.body.price), req.body.catid, req.body.pid],
 		function (error, result) {
 			if (error) {
 				console.error(error);
@@ -252,6 +307,11 @@ app.post('/prod/edit', function (req, res) {
 
 // URL expected: http://hostname/admin-api/prod/remove
 app.post('/prod/remove', function (req, res) {
+
+	if (!req.session.admin){
+		res.redirect('/admin/login');		
+		return;
+	}
 
 	// put your input validations and/or sanitizations here
 	// Reference: https://www.npmjs.com/package/express-validator
