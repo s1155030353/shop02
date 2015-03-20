@@ -1,12 +1,30 @@
 var express = require('express');
 var anyDB = require('any-db');
+var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
 var config = require('../shopXX-ierg4210.config.js');
+var csp = require('content-security-policy');
+//var RedisStore = require('connect-redis')(session);
+var csrf = require('csurf');
+var cspPolicy = {
+    'Content-Security-Policy': "default-src 'self' 127.0.0.1",
+    'X-Content-Security-Policy': "default-src 'self' 127.0.0.1",
+    'X-WebKit-CSP': "default-src 'self' 127.0.0.1",
+};
+
+var globalCSP = csp.getCSP(cspPolicy);
 
 var app = express.Router();
+
+app.use(globalCSP);
+var csrfProtection = csrf({ cookie: true });
+var parseForm = bodyParser.urlencoded({ extended: false });
+app.use(cookieParser());
 
 var pool = anyDB.createPool(config.dbURI, {
 	min: 2, max: 10
 });
+//console.error(error);
 
 app.get('/', function (req, res) {
 
@@ -27,7 +45,8 @@ app.get('/', function (req, res) {
 				layout: 'main',
 				title: 'IERG4210 Shop02',
 				cat: categories.rows,
-				prod: products.rows
+				prod: products.rows,
+				csrfToken: req.csrfToken()
 	    	});
 	    	//console.log(categories.rows);
 	    });
@@ -53,7 +72,8 @@ app.get('/main', function (req, res) {
 				layout: 'main',
 				title: 'IERG4210 Shop02',
 				cat: categories.rows,
-				prod: products.rows
+				prod: products.rows,
+				csrfToken: req.csrfToken()
 	    	});
 	    });   
     });
@@ -88,7 +108,8 @@ app.get("/category", function(req, res) {
 					cat: categories.rows,
 					prod: products.rows,
 					catid: req.query.catid,
-					name: catname.rows[0].name
+					name: catname.rows[0].name,
+					csrfToken: req.csrfToken()
 				});
 			});
 		});
@@ -104,7 +125,7 @@ app.get("/product", function(req, res) {
 			res.status(500).end();
 			return;
 		}
-		console.log(categories);
+		//console.log(categories);
 
 		pool.query('SELECT * FROM products WHERE pid=' + req.query.pid, function (error, prod) {
 			if (error) {
@@ -124,7 +145,8 @@ app.get("/product", function(req, res) {
 					title: 'IERG4210 Shop02 ' + prod.rows[0].name,
 					cat: categories.rows,
 					prodcat: prodcat.rows[0],
-					prod: prod.rows[0]
+					prod: prod.rows[0],
+					csrfToken: req.csrfToken()
 				});
 				//console.log(prodcat.rows);
 				//console.log(prod.rows);
