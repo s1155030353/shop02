@@ -3,7 +3,6 @@ var anyDB = require('any-db');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var config = require('../shopXX-ierg4210.config.js');
-//var bodyParser = require('body-parser');
 //var expressValidator = require('express-validator');
 
 var csp = require('content-security-policy');

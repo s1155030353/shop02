@@ -8,6 +8,8 @@ var fs = require('fs');
 var xssFilters = require('xss-filters');
 var session = require('express-session');
 var csp = require('content-security-policy');
+var cookieParser = require('cookie-parser');
+var csrf = require('csurf');
 
 var pool = anyDB.createPool(config.dbURI, {
 	min: 2, max: 20
@@ -25,11 +27,16 @@ var cspPolicy = {
     'X-WebKit-CSP': "default-src 'self' 127.0.0.1",
 };
 
+var csrfProtection = csrf({ cookie: true });
+var parseForm = bodyParser.urlencoded({ extended: false });
+
 var globalCSP = csp.getCSP(cspPolicy);
 
 var app = express.Router();
 
 app.use(globalCSP);
+
+app.use(cookieParser());
 
 app.use(session({
 //	store:new RedisStore({
@@ -53,7 +60,7 @@ app.use(expressValidator());
 app.use(multer({ dest: './public/images/'}))
 
 // URL expected: http://hostname/admin/api/cat/add
-app.post('/cat/add', function (req, res) {
+app.post('/cat/add', parseForm, csrfProtection, function (req, res) {
 
 	// put your input validations and/or sanitizations here
 	// Reference: https://www.npmjs.com/package/express-validator
@@ -94,7 +101,7 @@ app.post('/cat/add', function (req, res) {
 });
 
 // URL expected: http://hostname/admin-api/cat/edit
-app.post('/cat/edit', function (req, res) {
+app.post('/cat/edit', parseForm, csrfProtection, function (req, res) {
 
 	if (!req.session.admin){
 		res.redirect('/admin/login');		
@@ -144,7 +151,7 @@ app.post('/cat/edit', function (req, res) {
 });
 
 // URL expected: http://hostname/admin-api/cat/remove
-app.post('/cat/remove', function (req, res) {
+app.post('/cat/remove', parseForm, csrfProtection, function (req, res) {
 
 	if (!req.session.admin){
 		res.redirect('/admin/login');		
@@ -205,7 +212,7 @@ app.post('/cat/remove', function (req, res) {
 });
 
 // URL expected: http://hostname/admin/api/prod/add
-app.post('/prod/add', function (req, res) {
+app.post('/prod/add', parseForm, csrfProtection, function (req, res) {
 
 	if (!req.session.admin){
 		res.redirect('/admin/login');		
@@ -246,7 +253,7 @@ app.post('/prod/add', function (req, res) {
 });
 
 // URL expected: http://hostname/admin-api/prod/edit
-app.post('/prod/edit', function (req, res) {
+app.post('/prod/edit', parseForm, csrfProtection, function (req, res) {
 
 	if (!req.session.admin){
 		res.redirect('/admin/login');		
@@ -306,7 +313,7 @@ app.post('/prod/edit', function (req, res) {
 });
 
 // URL expected: http://hostname/admin-api/prod/remove
-app.post('/prod/remove', function (req, res) {
+app.post('/prod/remove', parseForm, csrfProtection, function (req, res) {
 
 	if (!req.session.admin){
 		res.redirect('/admin/login');		

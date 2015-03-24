@@ -15,6 +15,7 @@
 		<form method="POST" action="/admin/api/cat/add">
 			<label for="catNewName">Name *</label>
 			<div><input id="catNewName" type="text" name="name" required pattern="^[\w- ']+$" /></div>
+			<input type="hidden" name="_csrf" value="{{csrfToken}}">
 			<input type="submit" value="Submit" />
 		</form>
 	</fieldset>
@@ -33,6 +34,7 @@
 			</div>
 			<label for="catEditName">New Name *</label>
 			<div><input id="catEditName" type="text" name="name" required pattern="^[\w- ']+$" /></div>
+			<input type="hidden" name="_csrf" value="{{csrfToken}}">
 			<input type="submit" value="Submit" />
 		</form>
 	</fieldset>
@@ -47,6 +49,7 @@
 				<option value="{{catid}}">{{name}}</option>
 			{{/each}}
 			</select>
+			<input type="hidden" name="_csrf" value="{{csrfToken}}">
 			<input type="submit" value="Submit" />
 		</form>
 	</fieldset>
@@ -77,6 +80,7 @@
 
 			<label for="prodNewImage">Image *</label>
 			<div><input id="prodNewImage" type="file" name="image" required /></div>
+			<input type="hidden" name="_csrf" value="{{csrfToken}}">
 
 			<input type="submit" value="Submit" />
 		</form>
@@ -118,6 +122,7 @@
 
 			        <label for="prodEditImage">Image *</label>
 			        <div><input id="prodEditImage" type="file" name="image" required /></div>
+			        <input type="hidden" name="_csrf" value="{{csrfToken}}">
 				</div>
 				<input type="submit" value="Submit" />
 			</form>
@@ -144,6 +149,7 @@
 				{{/each}}
 				</select>
 			</div>
+			<input type="hidden" name="_csrf" value="{{csrfToken}}">
 
 			<input type="submit" value="Submit" />
 		</form>

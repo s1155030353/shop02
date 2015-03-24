@@ -9,6 +9,7 @@
 			<div><input id="username" type="text" name="username" /></div>
 			<label for="password">Password *</label>
 			<div><input id="password" type="password" name="password" required pattern="^[\w- ']+$" /></div>
+			<input type="hidden" name="_csrf" value="{{csrfToken}}">
 			<input type="submit" value="Submit" />
 		</form>
 	</fieldset>

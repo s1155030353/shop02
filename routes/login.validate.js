@@ -7,6 +7,8 @@ var crypto = require('crypto');
 var xssFilters = require('xss-filters');
 var session = require('express-session');
 var csp = require('content-security-policy');
+var cookieParser = require('cookie-parser');
+var csrf = require('csurf');
 //var RedisStore = require('connect-redis')(session);
 
 var cspPolicy = {
@@ -16,10 +18,14 @@ var cspPolicy = {
 };
 
 var globalCSP = csp.getCSP(cspPolicy);
+var csrfProtection = csrf({ cookie: true });
+var parseForm = bodyParser.urlencoded({ extended: false });
 
 var app = express.Router();
 
 app.use(globalCSP);
+
+app.use(cookieParser());
 
 app.use(bodyParser.urlencoded({extended:true}));
 
@@ -47,7 +53,7 @@ var inputPattern = {
 	password: /^\d+(?:\.\d{1,2})?$/
 };
 
-app.post('/', function (req, res, next) {
+app.post('/', parseForm, csrfProtection, function (req, res, next) {
 /*
 	if (req.session.user){
 		if (req.session.admin){

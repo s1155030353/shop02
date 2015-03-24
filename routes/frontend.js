@@ -5,7 +5,7 @@ var bodyParser = require('body-parser');
 var config = require('../shopXX-ierg4210.config.js');
 var csp = require('content-security-policy');
 //var RedisStore = require('connect-redis')(session);
-var csrf = require('csurf');
+//var csrf = require('csurf');
 var cspPolicy = {
     'Content-Security-Policy': "default-src 'self' 127.0.0.1",
     'X-Content-Security-Policy': "default-src 'self' 127.0.0.1",
@@ -17,9 +17,10 @@ var globalCSP = csp.getCSP(cspPolicy);
 var app = express.Router();
 
 app.use(globalCSP);
-var csrfProtection = csrf({ cookie: true });
-var parseForm = bodyParser.urlencoded({ extended: false });
-app.use(cookieParser());
+//var csrfProtection = csrf({ cookie: true });
+//var parseForm = bodyParser.urlencoded({ extended: false });
+//app.use(cookieParser());
+//app.use(csrf);
 
 var pool = anyDB.createPool(config.dbURI, {
 	min: 2, max: 10
@@ -46,7 +47,7 @@ app.get('/', function (req, res) {
 				title: 'IERG4210 Shop02',
 				cat: categories.rows,
 				prod: products.rows,
-				csrfToken: req.csrfToken()
+				//csrfToken: req.csrfToken()
 	    	});
 	    	//console.log(categories.rows);
 	    });
@@ -73,7 +74,7 @@ app.get('/main', function (req, res) {
 				title: 'IERG4210 Shop02',
 				cat: categories.rows,
 				prod: products.rows,
-				csrfToken: req.csrfToken()
+				//csrfToken: req.csrfToken()
 	    	});
 	    });   
     });
@@ -109,7 +110,7 @@ app.get("/category", function(req, res) {
 					prod: products.rows,
 					catid: req.query.catid,
 					name: catname.rows[0].name,
-					csrfToken: req.csrfToken()
+					//csrfToken: req.csrfToken()
 				});
 			});
 		});
@@ -146,7 +147,7 @@ app.get("/product", function(req, res) {
 					cat: categories.rows,
 					prodcat: prodcat.rows[0],
 					prod: prod.rows[0],
-					csrfToken: req.csrfToken()
+					//csrfToken: req.csrfToken()
 				});
 				//console.log(prodcat.rows);
 				//console.log(prod.rows);
