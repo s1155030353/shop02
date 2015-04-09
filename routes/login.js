@@ -32,7 +32,7 @@ var inputPattern = {
 };
 */
 // URL expected: http://hostname/login
-app.get('/', function (req, res) {
+app.get('/', csrfProtection, function (req, res) {
 //	console.log(req);
 
 	res.render('login-panel', {

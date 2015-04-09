@@ -43,7 +43,7 @@ app.use(session({
 
 // URL expected: http://hostname/admin
 //app.get('/', csrfProtection, function (req, res) {
-app.get('/', function (req, res) {
+app.get('/', csrfProtection, function (req, res) {
 	console.log(req.session);
 
 	if (!req.session){
