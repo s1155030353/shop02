@@ -46,6 +46,11 @@ app.use(session({
 app.get('/', csrfProtection, function (req, res) {
 	console.log(req.session);
 
+	var schema = req.headers['x-forwarded-proto'];
+    if (schema === 'https') {// Redirect to https.
+        res.redirect('https://' + req.headers.host + req.url);
+    }
+
 	if (!req.session){
 		res.redirect('/admin/login');
 		return;
