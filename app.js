@@ -5,9 +5,11 @@ var express = require('express'),
     frontEndRouter = require('./routes/frontend.js'),
     backEndRouter = require('./routes/backend.js'),
     backEndAPIRouter = require('./routes/backend.api.js'),
-    loginRouter = require('./routes/login.js'),
-    loginvalidateRouter = require('./routes/login.validate.js'),
+    adminloginRouter = require('./routes/adminlogin.js'),
+    adminloginvalidateRouter = require('./routes/adminlogin.validate.js'),
     logoutRouter = require('./routes/logout.js'),
+    userloginRouter = require('./routes/userlogin.js'),
+    userloginvalidateRouter = require('./routes/userlogin.validate.js'),
     csp = require('content-security-policy');
 
 var app = express();
@@ -62,9 +64,11 @@ app.get("/product/:who", function(req, res) {
 // backend routers run first
 app.use('/admin/api', backEndAPIRouter);
 app.use('/admin', backEndRouter);
-app.use('/admin/login', loginRouter);
+app.use('/admin/login', adminloginRouter);
 app.use('/admin/logout', logoutRouter);
-app.use('/admin/login/validate', loginvalidateRouter);
+app.use('/admin/login/validate', adminloginvalidateRouter);
+app.use('/account/login', userloginRouter);
+app.use('/account/login/validate', userloginvalidateRouter);
 // TODO: shift your routes into ./routes/frontend.js
 app.use('/', frontEndRouter);
 

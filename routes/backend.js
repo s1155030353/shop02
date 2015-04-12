@@ -44,7 +44,6 @@ app.use(session({
 // URL expected: http://hostname/admin
 //app.get('/', csrfProtection, function (req, res) {
 app.get('/', csrfProtection, function (req, res) {
-	console.log(req.session);
 
 	var schema = req.headers['x-forwarded-proto'];
     if (schema === 'https') {// Redirect to https.
@@ -56,8 +55,11 @@ app.get('/', csrfProtection, function (req, res) {
 		return;
 	}
 	if (!req.session.admin){
-		res.redirect('/');		
+		res.redirect('/admin/login');		
 		return;
+	}
+	if (req.session.admin == 0){
+		res.redirect('/');
 	}
 
 	// async fetch data from SQL, render page when ready

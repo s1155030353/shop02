@@ -31,7 +31,7 @@ app.use(session({
 );
 
 app.get('/', function (req, res) {
-	console.log(req);
+	//console.log(req);
 	req.session.destroy(function(err) {
 		res.redirect('/admin/login');
 	});

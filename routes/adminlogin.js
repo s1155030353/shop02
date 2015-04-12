@@ -6,6 +6,7 @@ var config = require('../shopXX-ierg4210.config.js');
 //var expressValidator = require('express-validator');
 
 var csp = require('content-security-policy');
+var session = require('express-session');
 //var RedisStore = require('connect-redis')(session);
 var csrf = require('csurf');
 var cspPolicy = {
@@ -26,6 +27,15 @@ app.use(cookieParser());
 var pool = anyDB.createPool(config.dbURI, {
 	min: 2, max: 10
 });
+
+app.use(session({
+	name: 'login',
+	secret: '04n4MY7jLXKlz3y17YdoSOR9o71gvH3R',
+	resave: false,
+	saveUninitialized: false,
+	cookie: { path: '/admin', maxAge: 1000*60*60*24*3, httpOnly: true }
+	})
+);
 /*
 var inputPattern = {
 //	email: /^[\w- ']+$/,
@@ -35,7 +45,12 @@ var inputPattern = {
 app.get('/', csrfProtection, function (req, res) {
 //	console.log(req);
 
-	res.render('login-panel', {
+	if (req.session.admin == 1){
+//		console.log(req.session);
+		return res.redirect('/admin');
+	}
+
+	res.render('adminlogin-panel', {
 		layout: 'admin',
 		title: 'IERG4210 ShopXX Login',
 		csrfToken: req.csrfToken()

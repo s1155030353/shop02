@@ -1,0 +1,22 @@
+<h1>IERG4210 Shop02 - Login Panel</h1>
+<article id="main">
+
+<section id="logIn" class="loginPanel">
+	<fieldset id="userloginPanel">
+		<legend>Log in</legend>
+		<form method="POST" action="/admin/login/validate">
+			<label for="name">User Name *</label>
+			<div><input id="username" type="text" name="username" /></div>
+			<label for="password">Password *</label>
+			<div><input id="password" type="password" name="password" required pattern="^[\w- ']+$" /></div>
+			<input type="hidden" name="_csrf" value="{{csrfToken}}">
+			<input type="submit" value="Submit" />
+
+		</form>
+	</fieldset>
+	<a href="/"> Home </a>
+</section>
+
+<div class="clear"></div>
+
+</article>
