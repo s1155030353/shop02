@@ -114,7 +114,7 @@ app.post('/', parseForm, csrfProtection, function (req, res, next) {
 			//console.log(submitedSaltedPassword); //I made a mistake here and this is how to debug
 			//console.log(result.rows[0].saltedPassword); // Output in the right position.
 			// Didn’t pass the credential.
-			if (result.rowCount === 0 || result.rows[0].saltedPassword != submitedSaltedPassword || result.rows[0].admin == 0) {
+			if (result.rowCount === 0 || result.rows[0].saltedPassword != submitedSaltedPassword || result.rows[0].admin == '0') {
 				return res.status(400).json({'loginError': 'Invalid Credentials'}).end();
 			}
 			req.session.regenerate(function(err) {

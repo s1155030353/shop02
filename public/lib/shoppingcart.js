@@ -53,7 +53,7 @@ orderdetail={
             //保存购物车 
             utils.setParam("ShoppingCart", JSON.stringify(productlist)); 
         } 
-        alert('商品:' + pid + ' ' + amnt + ' ');
+        //alert('商品:' + pid + ' ' + amnt + ' ');
     }
     //修改给买商品数量 
     function updateproductnum(pid,quan){ 
@@ -151,6 +151,11 @@ function showShoppingCart(e) {
             $('a.total').html('Shopping list&nbsp;&nbsp;&nbsp;Total: $' + total);
         }
     });
+}
+
+function sendShoppingcart(e){
+    var cart = JSON.parse(utils.getParam('ShoppingCart'));
+    
 }
 
 $(document).ready(function () {

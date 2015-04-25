@@ -10,6 +10,7 @@ var express = require('express'),
     logoutRouter = require('./routes/logout.js'),
     userloginRouter = require('./routes/userlogin.js'),
     userloginvalidateRouter = require('./routes/userlogin.validate.js'),
+    checkoutRouter = require('./routes/checkout.js'),
     csp = require('content-security-policy');
 
 var app = express();
@@ -70,6 +71,7 @@ app.use('/admin/login/validate', adminloginvalidateRouter);
 app.use('/account/login', userloginRouter);
 app.use('/account/login/validate', userloginvalidateRouter);
 // TODO: shift your routes into ./routes/frontend.js
+app.use('/checkout', checkoutRouter);
 app.use('/', frontEndRouter);
 
 app.listen(process.env.PORT || 3000, function () {
