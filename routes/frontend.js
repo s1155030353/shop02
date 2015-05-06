@@ -48,7 +48,7 @@ var pool = anyDB.createPool(config.dbURI, {
 	min: 2, max: 10
 });
 
-app.get('/', function (req, res) {
+app.post('/', function (req, res) {
 //	if (!req.session){
 //		req.session.regenerate(function(error){
 
