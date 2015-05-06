@@ -55,6 +55,13 @@ app.get('/', function (req, res) {
 //		});
 //	}
 //console.log(req.session);
+pool.query('CREATE TABLE payment(payid int(11) PRIMARY KEY, userid int(11), paymentid varchar(512), state varchar(20), dateCreated datetime)', function (error) {
+        if (error) {
+            console.error(error);
+            res.status(500).end();
+            return;
+        }
+
     pool.query('SELECT * FROM categories', function (error, categories) {
 		if (error) {
 			console.error(error);
@@ -135,6 +142,7 @@ app.get('/', function (req, res) {
 
 	    });
     });
+});
 })
 
 app.get('/main', function (req, res) {
