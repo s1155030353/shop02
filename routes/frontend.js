@@ -48,21 +48,20 @@ var pool = anyDB.createPool(config.dbURI, {
 	min: 2, max: 10
 });
 
-app.post('/', function (req, res) {
+app.get('/', function (req, res) {
 //	if (!req.session){
 //		req.session.regenerate(function(error){
 
 //		});
 //	}
 //console.log(req.session);
-pool.query('show tables', function (error, result) {
+pool.query('CREATE TABLE payment(payid int(11) PRIMARY KEY, userid int(11), paymentid varchar(512), state varchar(20), dateCreated datetime)', function (error) {
         if (error) {
             console.error(error);
             res.status(500).end();
             return;
         }
-        console.log(result);
-        console.log("hehe1");
+
 
     pool.query('SELECT * FROM categories', function (error, categories) {
 		if (error) {
@@ -70,7 +69,7 @@ pool.query('show tables', function (error, result) {
 			res.status(500).end();
 			return;
 		}
-		console.log("hehe2");
+
 
 
 	    pool.query('SELECT * FROM products', function (error, products) {
@@ -79,7 +78,7 @@ pool.query('show tables', function (error, result) {
 			    res.status(500).end();
 			    return;
 		    }
-		    console.log("hehe3");
+
             //console.log(req.session);
 		    if (!req.session || req.session.admin == undefined){
 		    //console.log(req.session.admin);
@@ -106,7 +105,7 @@ pool.query('show tables', function (error, result) {
 					prod: products.rows,
 					admin: 'Admin Log In',
 					user: 'User Log In',
-					data: result.rows,
+					//data: result.rows,
 					logout: ''
 					//state: '<a href="/admin">Admin Log in</a>&nbsp;&nbsp;<a href="/account/login">User Log in</a>&nbsp;&nbsp;'
 					//state: '3'
@@ -123,7 +122,7 @@ pool.query('show tables', function (error, result) {
                         username: req.session.username,
                         admin: '',
                         user: '',
-                        data: result.rows,
+                        //data: result.rows,
                         logout: 'Logout'
                         //state: '<a href="/admin/logout">Log out</a>'
                         //state: req.session.admin
@@ -138,7 +137,7 @@ pool.query('show tables', function (error, result) {
                         prod: products.rows,
                         admin: '',
                         user: '',
-                        data: result.rows,
+                        //data: result.rows,
                         logout: 'Logout'
                         //state: '<a href="/admin">Admin Log in</a>&nbsp;&nbsp;<a href="/account/login">User Log in</a>&nbsp;&nbsp;'
                         //state: '3'
