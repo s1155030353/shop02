@@ -158,7 +158,7 @@ app.post('/', function(req, res) {
             "redirect_urls": {
                 // change the URLs
                 "return_url": "https://store02.ierg4210.org/checkout/thankyou",
-                s"cancel_url": "https://store02.ierg4210.org/checkout/error"
+                "cancel_url": "https://store02.ierg4210.org/checkout/error"
                 //"return_url": "https://www.google.com",
                 //"cancel_url": "http://www.baidu.com"
             },
