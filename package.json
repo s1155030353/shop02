@@ -1,5 +1,5 @@
 {
-  "name": "shopsample",
+  "name": "shop02-ierg4210",
   "version": "1.0.0",
   "description": "shopsample",
   "main": "app.js",
@@ -26,5 +26,18 @@
     "multiparty": "^4.1.1",
     "paypal-rest-sdk": "^1.5.2",
     "xss-filters": "^1.0.6"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ierg4210/shop02.git"
+  },
+  "keywords": [
+    "CUHK",
+    "IERG4210"
+  ],
+  "bugs": {
+    "url": "https://github.com/ierg4210/shop02/issues"
+  },
+  "homepage": "https://github.com/ierg4210/shop02"
 }

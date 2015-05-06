@@ -1,10 +1,10 @@
 branch-defaults:
   master:
-    environment: shop02-dev
+    environment: shop02-dev3
   phase4a:
     environment: shop02-dev
 global:
-  application_name: shop02
+  application_name: shop02-dev
   default_ec2_keyname: aws-eb
   default_platform: 64bit Amazon Linux 2014.09 v1.1.0 running Node.js
   default_region: ap-southeast-1

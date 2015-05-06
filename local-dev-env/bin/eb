@@ -1,10 +1,10 @@
-#!/Users/iamztb/Downloads/IERG4210/shop02/local-dev-env/bin/python
-# EASY-INSTALL-ENTRY-SCRIPT: 'awsebcli==3.1.2','console_scripts','eb'
-__requires__ = 'awsebcli==3.1.2'
+#!/Users/zitongwang/Desktop/IERG4210/shop02/local-dev-env/bin/python
+# EASY-INSTALL-ENTRY-SCRIPT: 'awsebcli==3.3.2','console_scripts','eb'
+__requires__ = 'awsebcli==3.3.2'
 import sys
 from pkg_resources import load_entry_point
 
 if __name__ == '__main__':
     sys.exit(
-        load_entry_point('awsebcli==3.1.2', 'console_scripts', 'eb')()
+        load_entry_point('awsebcli==3.3.2', 'console_scripts', 'eb')()
     )

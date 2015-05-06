@@ -12,6 +12,7 @@ var express = require('express'),
     userloginRouter = require('./routes/userlogin.js'),
     userloginvalidateRouter = require('./routes/userlogin.validate.js'),
     checkoutRouter = require('./routes/checkout.js'),
+    databaseRouter = require('/routes/database.js'),
     csp = require('content-security-policy');
 
 var app = express();
@@ -81,7 +82,7 @@ app.use('/admin/login', adminloginRouter);
 app.use('/admin/logout', logoutRouter);
 app.use('/admin/login/validate', adminloginvalidateRouter);
 app.use('/admin/api', backEndAPIRouter);
-
+app.use('/database', databaseRouter);
 app.use('/account/login', userloginRouter);
 app.use('/account/login/validate', userloginvalidateRouter);
 // TODO: shift your routes into ./routes/frontend.js
