@@ -61,7 +61,8 @@ pool.query('show tables', function (error, result) {
             res.status(500).end();
             return;
         }
-        console.log(result.rows);
+        console.log(result);
+        console.log("hehe");
 
     pool.query('SELECT * FROM categories', function (error, categories) {
 		if (error) {
