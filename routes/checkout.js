@@ -135,7 +135,7 @@ app.post('/', function(req, res) {
         for (var i in products.rows){
             for (var j in list) {
                 if (products.rows[i].pid == list[j].pid){
-                    console.log("haha");
+                    console.log(products.rows);
                     items.push({
                         name : products.rows[i].name,
                         sku : list[j].pid,
@@ -157,10 +157,10 @@ app.post('/', function(req, res) {
             },
             "redirect_urls": {
                 // change the URLs
-                //"return_url": "https://store02.ierg4210.org/checkout/thankyou",
-                //"cancel_url": "https://store02.ierg4210.org/checkout/error"
-                "return_url": "https://www.google.com",
-                "cancel_url": "http://www.baidu.com"
+                "return_url": "https://store02.ierg4210.org/checkout/thankyou",
+                s"cancel_url": "https://store02.ierg4210.org/checkout/error"
+                //"return_url": "https://www.google.com",
+                //"cancel_url": "http://www.baidu.com"
             },
             "transactions": [{
                 "item_list":
