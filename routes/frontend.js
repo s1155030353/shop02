@@ -103,6 +103,7 @@ pool.query('show tables', function (error, result) {
 					prod: products.rows,
 					admin: 'Admin Log In',
 					user: 'User Log In',
+					data: result.rows,
 					logout: ''
 					//state: '<a href="/admin">Admin Log in</a>&nbsp;&nbsp;<a href="/account/login">User Log in</a>&nbsp;&nbsp;'
 					//state: '3'
@@ -119,6 +120,7 @@ pool.query('show tables', function (error, result) {
                         username: req.session.username,
                         admin: '',
                         user: '',
+                        data: result.rows,
                         logout: 'Logout'
                         //state: '<a href="/admin/logout">Log out</a>'
                         //state: req.session.admin
@@ -133,6 +135,7 @@ pool.query('show tables', function (error, result) {
                         prod: products.rows,
                         admin: '',
                         user: '',
+                        data: result.rows,
                         logout: 'Logout'
                         //state: '<a href="/admin">Admin Log in</a>&nbsp;&nbsp;<a href="/account/login">User Log in</a>&nbsp;&nbsp;'
                         //state: '3'
