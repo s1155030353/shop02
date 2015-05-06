@@ -62,7 +62,7 @@ pool.query('show tables', function (error, result) {
             return;
         }
         console.log(result);
-        console.log("hehe");
+        console.log("hehe1");
 
     pool.query('SELECT * FROM categories', function (error, categories) {
 		if (error) {
@@ -70,6 +70,8 @@ pool.query('show tables', function (error, result) {
 			res.status(500).end();
 			return;
 		}
+		console.log("hehe2");
+
 
 	    pool.query('SELECT * FROM products', function (error, products) {
 		    if (error) {
@@ -77,7 +79,8 @@ pool.query('show tables', function (error, result) {
 			    res.status(500).end();
 			    return;
 		    }
-            console.log(req.session);
+		    console.log("hehe3");
+            //console.log(req.session);
 		    if (!req.session || req.session.admin == undefined){
 		    //console.log(req.session.admin);
 		    /*if (req.session.admin == 1 || req.session.admin == 0){
