@@ -40,6 +40,7 @@ app.use(session({
 // URL expected: http://hostname/admin
 //app.get('/', csrfProtection, function (req, res) {
 app.get('/', csrfProtection, function (req, res, next) {
+    console.log("hehe");
     /*
      var schema = req.headers['x-forwarded-proto'];
      if (schema === 'https') {// Redirect to https.
