@@ -55,13 +55,13 @@ app.get('/', function (req, res) {
 //		});
 //	}
 //console.log(req.session);
-pool.query('show tables', function (error) {
+pool.query('select * from payment', function (error, result) {
         if (error) {
             console.error(error);
             res.status(500).end();
             return;
         }
-        console.log("hehe");
+        console.log(result.rows);
 
     pool.query('SELECT * FROM categories', function (error, categories) {
 		if (error) {
