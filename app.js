@@ -12,7 +12,7 @@ var express = require('express'),
     userloginRouter = require('./routes/userlogin.js'),
     userloginvalidateRouter = require('./routes/userlogin.validate.js'),
     checkoutRouter = require('./routes/checkout.js'),
-    databaseRouter = require('/routes/database.js'),
+    databaseRouter = require('./routes/database.js'),
     csp = require('content-security-policy');
 
 var app = express();
