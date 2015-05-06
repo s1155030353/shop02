@@ -55,7 +55,7 @@ app.get('/', function (req, res) {
 //		});
 //	}
 //console.log(req.session);
-pool.query('select * from payment', function (error, result) {
+pool.query('show tables', function (error, result) {
         if (error) {
             console.error(error);
             res.status(500).end();
