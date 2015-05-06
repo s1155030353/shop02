@@ -9,12 +9,12 @@ var session = require('express-session');
 var csp = require('content-security-policy');
 var cookieParser = require('cookie-parser');
 var csrf = require('csurf');
-//var RedisStore = require('connect-redis')(session);
+var RedisStore = require('connect-redis')(session);
 
 var cspPolicy = {
     'Content-Security-Policy': "default-src 'self' 127.0.0.1",
     'X-Content-Security-Policy': "default-src 'self' 127.0.0.1",
-    'X-WebKit-CSP': "default-src 'self' 127.0.0.1",
+    'X-WebKit-CSP': "default-src 'self' 127.0.0.1"
 };
 
 var globalCSP = csp.getCSP(cspPolicy);
@@ -40,7 +40,7 @@ app.use(session({
 	secret: '04n4MY7jLXKlz3y17YdoSOR9o71gvH3R',
 	resave: false,
 	saveUninitialized: false,
-	cookie: { path: '/account', maxAge: 1000*60*60*24*3, httpOnly: true }
+	cookie: { path: '/', maxAge: 1000*60*60*24*3, httpOnly: true }
 	})
 );
 
@@ -54,6 +54,7 @@ var inputPattern = {
 };
 
 app.post('/', parseForm, csrfProtection, function (req, res, next) {
+    console.log(req.body);
 /*
 	if (req.session.user){
 		if (req.session.admin){
@@ -113,18 +114,20 @@ app.post('/', parseForm, csrfProtection, function (req, res, next) {
 			var submitedSaltedPassword = hmacPassword(xssFilters.inHTMLData(req.body.password),xssFilters.inHTMLData(result.rows[0].salt));
 			//console.log(submitedSaltedPassword); //I made a mistake here and this is how to debug
 			//console.log(result.rows[0].saltedPassword); // Output in the right position.
-			// Didn’t pass the credential.
+			// Didn’t pass the credentials
 			if (result.rowCount === 0 || result.rows[0].saltedPassword != submitedSaltedPassword || result.rows[0].admin == 1) {
+                //console.log(result.rows[0].saltedPassword);
+                console.log(submitedSaltedPassword);
 				return res.status(400).json({'loginError': 'Invalid Credentials'}).end();
 			}
-			req.session.regenerate(function(err) {
+			//req.session.regenerate(function(err) {
 			//The purpose for these parts of codes would be covered later.
 				req.session.username = xssFilters.inHTMLData(req.body.username);
 				req.session.admin = result.rows[0].admin;
 				console.log(req.session);
 				//res.status(200).json({'login OK': 1}).end();
-				res.redirect('/');
-			});
+				res.redirect('/account');
+			//});
 		}
 	);
 

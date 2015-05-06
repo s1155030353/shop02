@@ -1,6 +1,15 @@
 #main{width:800px}
 .panel{float:left;width:350px;padding:5px}
 
+.droperea{
+    position: relative;
+    margin:80px auto 90px;
+    min-height: 200px;
+    overflow: hidden;
+    width: 300px;
+    box-shadow:0 0 4px rgba(0,0,0,0.3) inset,0 -3px 2px rgba(0,0,0,0.1);
+}
+
 fieldset{width:310px}
 form label{clear:left;float:left;width:90px;line-height:23px}
 form div{padding:4px 0}

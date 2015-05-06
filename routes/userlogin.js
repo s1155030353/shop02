@@ -7,12 +7,12 @@ var config = require('../shopXX-ierg4210.config.js');
 
 var csp = require('content-security-policy');
 var session = require('express-session');
-//var RedisStore = require('connect-redis')(session);
+var RedisStore = require('connect-redis')(session);
 var csrf = require('csurf');
 var cspPolicy = {
     'Content-Security-Policy': "default-src 'self' 127.0.0.1",
     'X-Content-Security-Policy': "default-src 'self' 127.0.0.1",
-    'X-WebKit-CSP': "default-src 'self' 127.0.0.1",
+    'X-WebKit-CSP': "default-src 'self' 127.0.0.1"
 };
 
 var globalCSP = csp.getCSP(cspPolicy);
@@ -37,7 +37,7 @@ app.use(session({
 	secret: '04n4MY7jLXKlz3y17YdoSOR9o71gvH3R',
 	resave: false,
 	saveUninitialized: false,
-	cookie: { path: '/account', maxAge: 1000*60*60*24*3, httpOnly: true }
+	cookie: { path: '/', maxAge: 1000*60*60*24*3, httpOnly: true }
 	})
 );
 /*
@@ -47,17 +47,24 @@ var inputPattern = {
 */
 // URL expected: http://hostname/login
 app.get('/', csrfProtection, function (req, res) {
-//	console.log(req);
+	console.log(req.session);
+    if (!req.session){
+        res.render('userlogin-panel', {
+            layout: 'admin',
+            title: 'IERG4210 ShopXX Login',
+            csrfToken: req.csrfToken()
+        });
+        return;
+    }
+
 	if (req.session.admin == 0){
 		return res.redirect('/');
 	}
-
-	res.render('userlogin-panel', {
-		layout: 'admin',
-		title: 'IERG4210 ShopXX Login',
-		csrfToken: req.csrfToken()
-	});
-
+    res.render('userlogin-panel', {
+        layout: 'admin',
+        title: 'IERG4210 ShopXX Login',
+        csrfToken: req.csrfToken()
+    });
 });
 
 /*

@@ -9,12 +9,12 @@ var session = require('express-session');
 var csp = require('content-security-policy');
 var cookieParser = require('cookie-parser');
 var csrf = require('csurf');
-//var RedisStore = require('connect-redis')(session);
+var RedisStore = require('connect-redis')(session);
 
 var cspPolicy = {
     'Content-Security-Policy': "default-src 'self' 127.0.0.1",
     'X-Content-Security-Policy': "default-src 'self' 127.0.0.1",
-    'X-WebKit-CSP': "default-src 'self' 127.0.0.1",
+    'X-WebKit-CSP': "default-src 'self' 127.0.0.1"
 };
 
 var globalCSP = csp.getCSP(cspPolicy);
@@ -40,7 +40,7 @@ app.use(session({
 	secret: '04n4MY7jLXKlz3y17YdoSOR9o71gvH3R',
 	resave: false,
 	saveUninitialized: false,
-	cookie: { path: '/admin', maxAge: 1000*60*60*24*3, httpOnly: true }
+	cookie: { path: '/', maxAge: 1000*60*60*24*3, httpOnly: true }
 	})
 );
 
@@ -49,7 +49,7 @@ var pool = anyDB.createPool(config.dbURI, {
 });
 
 var inputPattern = {
-	username: /^[\w- ']+$/,
+	username: /^[-\w ']+$/,
 	password: /^\d+(?:\.\d{1,2})?$/
 };
 
@@ -84,7 +84,8 @@ app.post('/', parseForm, csrfProtection, function (req, res, next) {
 	// manipulate the DB accordingly using prepared statement 
 	// (Prepared Statement := use ? as placeholder for values in sql statement; 
 	//   They'll automatically be replaced by the elements in next array)
-
+console.log(req.session);
+console.log("adminlogin.validate");
 	req.checkBody('username', 'Invalid Username')
 		.isLength(1, 512)
 		.matches(inputPattern.username);
@@ -115,16 +116,19 @@ app.post('/', parseForm, csrfProtection, function (req, res, next) {
 			//console.log(result.rows[0].saltedPassword); // Output in the right position.
 			// Didn’t pass the credential.
 			if (result.rowCount === 0 || result.rows[0].saltedPassword != submitedSaltedPassword || result.rows[0].admin == '0') {
-				return res.status(400).json({'loginError': 'Invalid Credentials'}).end();
+                //console.log(submitedSaltedPassword);
+                return res.status(400).json({'loginError': 'Invalid Credentials'}).end();
+
 			}
-			req.session.regenerate(function(err) {
+			//req.session.regenerate(function(err) {
 			//The purpose for these parts of codes would be covered later.
 				req.session.username = xssFilters.inHTMLData(req.body.username);
 				req.session.admin = result.rows[0].admin;
 				console.log(req.session);
+				console.log("adminlogin.validate.regenerate");
 				//res.status(200).json({'login OK': 1}).end();
 				res.redirect('/admin');
-			});
+			//});
 		}
 	);
 

@@ -10,6 +10,7 @@ var session = require('express-session');
 var csp = require('content-security-policy');
 var cookieParser = require('cookie-parser');
 var csrf = require('csurf');
+var RedisStore = require('connect-redis')(session);
 
 var pool = anyDB.createPool(config.dbURI, {
 	min: 2, max: 20
@@ -47,7 +48,7 @@ app.use(session({
 	secret: '04n4MY7jLXKlz3y17YdoSOR9o71gvH3R',
 	resave: false,
 	saveUninitialized: false,
-	cookie: { path: '/admin', maxAge: 1000*60*60*24*3, httpOnly: true }
+	cookie: { path: '/', maxAge: 1000*60*60*24*3, httpOnly: true }
 	})
 );
 
@@ -65,7 +66,8 @@ app.post('/cat/add', parseForm, csrfProtection, function (req, res) {
 	// put your input validations and/or sanitizations here
 	// Reference: https://www.npmjs.com/package/express-validator
 	// Reference: https://github.com/chriso/validator.js
-
+console.log(req.session);
+console.log("backend.api.addcat");
 	if (!req.session.admin){
 		res.redirect('/admin/login');		
 		return;
@@ -87,6 +89,7 @@ app.post('/cat/add', parseForm, csrfProtection, function (req, res) {
 	pool.query('INSERT INTO categories (name) VALUES (?)', 
 		[xssFilters.inHTMLData(req.body.name)],
 		function (error, result) {
+
 			if (error) {
 				console.error(error);
 				return res.status(500).json({'dbError': 'check server log'}).end();

@@ -19,7 +19,8 @@
 <ul id="shop-list">
   <li>Name      <input type="number" step="1" name="amount"/>      Price</li>
 </ul>
-  <button name="checkout" value="Check out" onclick = ""> Check out</button>
+  <a> user {{username}}  </a>
+    </a><button id="checkout" name="checkout" value="Check out" onclick = ""> Check out</button>
 </div>
 </div>
 
@@ -35,8 +36,12 @@
   <input type="submit" value="Log Out" />
 </form>
 -->
-<a href="/admin">Admin Log in</a>&nbsp;&nbsp;
-<a href="/admin/logout">Log out</a>
+
+<a href="/admin">{{admin}}</a>&nbsp;&nbsp;
+<a href="/account">{{user}}</a>&nbsp;&nbsp;
+<a href="/admin/logout">{{logout}}</a>
+
+<!--<pre>{{login}}</pre>-->
 </nav>
 
 <div id="categories">

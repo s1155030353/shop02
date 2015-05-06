@@ -26,15 +26,23 @@ app.use(session({
 	secret: '04n4MY7jLXKlz3y17YdoSOR9o71gvH3R',
 	resave: false,
 	saveUninitialized: false,
-	cookie: { path: '/admin', maxAge: 1000*60*60*24*3, httpOnly: true }
+	cookie: { path: '/', maxAge: 1000*60*60*24*3, httpOnly: true }
 	})
 );
 
 app.get('/', function (req, res) {
+	if (req.session.admin == 1){
+		req.session.destroy(function(err) {
+			res.redirect('/admin/login');
+		});
+	}
+	if (req.session.admin == 0){
+		req.session.destroy(function(err) {
+			res.redirect('/');
+		});
+	}
 	//console.log(req);
-	req.session.destroy(function(err) {
-		res.redirect('/admin/login');
-	});
+	
 });
 
 module.exports = app;

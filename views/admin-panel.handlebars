@@ -3,7 +3,6 @@
 
 <section id="categoryPanel" class="panel">
 
-
 		<fieldset id="logout">
 			<form method="GET" action="/admin/logout">
 				<input type="submit" value="Log out" />
@@ -80,6 +79,12 @@
 
 			<label for="prodNewImage">Image *</label>
 			<div><input id="prodNewImage" type="file" name="image" required /></div>
+
+<div id="dropBox" class="droperea" onload="upload()" >  
+    <ul id="list"></ul>  
+    <p id="texterea">Or drag your picture here to upload</p>  
+</div> 
+
 			<input type="hidden" name="_csrf" value="{{csrfToken}}">
 
 			<input type="submit" value="Submit" />

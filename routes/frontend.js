@@ -1,11 +1,16 @@
 var express = require('express');
 var anyDB = require('any-db');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
 var config = require('../shopXX-ierg4210.config.js');
+var bodyParser = require('body-parser');
+var expressValidator = require('express-validator');
+var crypto = require('crypto');
+var xssFilters = require('xss-filters');
+var session = require('express-session');
 var csp = require('content-security-policy');
-//var RedisStore = require('connect-redis')(session);
+var cookieParser = require('cookie-parser');
 //var csrf = require('csurf');
+var RedisStore = require('connect-redis')(session);
+
 var cspPolicy = {
     'Content-Security-Policy': "default-src 'self' 127.0.0.1",
     'X-Content-Security-Policy': "default-src 'self' 127.0.0.1",
@@ -13,22 +18,43 @@ var cspPolicy = {
 };
 
 var globalCSP = csp.getCSP(cspPolicy);
+//var csrfProtection = csrf({ cookie: true });
+var parseForm = bodyParser.urlencoded({ extended: false });
 
 var app = express.Router();
 
 app.use(globalCSP);
-//var csrfProtection = csrf({ cookie: true });
-//var parseForm = bodyParser.urlencoded({ extended: false });
-//app.use(cookieParser());
-//app.use(csrf);
+
+app.use(cookieParser());
+
+app.use(bodyParser.urlencoded({extended:true}));
+
+app.use(expressValidator());
+
+app.use(session({
+//	store:new RedisStore({
+//        host:'127.0.0.1',
+//        port:'6379'
+//    }),
+	name: 'login',
+	secret: '04n4MY7jLXKlz3y17YdoSOR9o71gvH3R',
+	resave: false,
+	saveUninitialized: false,
+	cookie: { path: '/', maxAge: 1000*60*60*24*3, httpOnly: true }
+	})
+);
 
 var pool = anyDB.createPool(config.dbURI, {
 	min: 2, max: 10
 });
-//console.error(error);
 
 app.get('/', function (req, res) {
+//	if (!req.session){
+//		req.session.regenerate(function(error){
 
+//		});
+//	}
+//console.log(req.session);
     pool.query('SELECT * FROM categories', function (error, categories) {
 		if (error) {
 			console.error(error);
@@ -42,14 +68,71 @@ app.get('/', function (req, res) {
 			    res.status(500).end();
 			    return;
 		    }
-		    res.render('main', {
-				layout: 'main',
-				title: 'IERG4210 Shop02',
-				cat: categories.rows,
-				prod: products.rows,
-				//csrfToken: req.csrfToken()
-	    	});
-	    	//console.log(categories.rows);
+            console.log(req.session);
+		    if (!req.session || req.session.admin == undefined){
+		    //console.log(req.session.admin);
+		    /*if (req.session.admin == 1 || req.session.admin == 0){
+		    	res.render('main', {
+					layout: 'main',
+					title: 'IERG4210 Shop02',
+					cat: categories.rows,
+					prod: products.rows,
+					admin: '',
+					user: '',
+					logout: 'Logout'
+					//state: '<a href="/admin/logout">Log out</a>'
+					//state: req.session.admin
+					//csrfToken: req.csrfToken()
+	    		});
+		    }
+			}*/
+		    //else{
+		    	res.render('main', {
+					layout: 'main',
+					title: 'IERG4210 Shop02',
+					cat: categories.rows,
+					prod: products.rows,
+					admin: 'Admin Log In',
+					user: 'User Log In',
+					logout: ''
+					//state: '<a href="/admin">Admin Log in</a>&nbsp;&nbsp;<a href="/account/login">User Log in</a>&nbsp;&nbsp;'
+					//state: '3'
+					//csrfToken: req.csrfToken()
+	    		});
+		    }
+            else{
+                if (req.session.admin == 0){
+                    res.render('main', {
+                        layout: 'main',
+                        title: 'IERG4210 Shop02',
+                        cat: categories.rows,
+                        prod: products.rows,
+                        username: req.session.username,
+                        admin: '',
+                        user: '',
+                        logout: 'Logout'
+                        //state: '<a href="/admin/logout">Log out</a>'
+                        //state: req.session.admin
+                        //csrfToken: req.csrfToken()
+                    });
+                }
+                else{
+                    res.render('main', {
+                        layout: 'main',
+                        title: 'IERG4210 Shop02',
+                        cat: categories.rows,
+                        prod: products.rows,
+                        admin: '',
+                        user: '',
+                        logout: 'Logout'
+                        //state: '<a href="/admin">Admin Log in</a>&nbsp;&nbsp;<a href="/account/login">User Log in</a>&nbsp;&nbsp;'
+                        //state: '3'
+                        //csrfToken: req.csrfToken()
+                    });
+                }
+            }
+		    
+
 	    });
     });
 })
@@ -69,13 +152,34 @@ app.get('/main', function (req, res) {
 			    res.status(500).end();
 			    return;
 		    }
-		    res.render('main', {
-				layout: 'main',
-				title: 'IERG4210 Shop02',
-				cat: categories.rows,
-				prod: products.rows,
-				//csrfToken: req.csrfToken()
-	    	});
+		    if (req.session.admin == 1 || req.session.admin == 0){
+		    	res.render('main', {
+					layout: 'main',
+					title: 'IERG4210 Shop02',
+					cat: categories.rows,
+					prod: products.rows,
+					admin: '',
+					user: '',
+					logout: 'Logout'
+					//state: '<a href="/admin/logout">Log out</a>'
+					//state: req.session.admin
+					//csrfToken: req.csrfToken()
+	    		});
+		    }
+		    else{
+		    	res.render('main', {
+					layout: 'main',
+					title: 'IERG4210 Shop02',
+					cat: categories.rows,
+					prod: products.rows,
+					admin: 'Admin Log In',
+					user: 'User Log In',
+					logout: ''
+					//state: '<a href="/admin">Admin Log in</a>&nbsp;&nbsp;<a href="/account/login">User Log in</a>&nbsp;&nbsp;'
+					//state: '3'
+					//csrfToken: req.csrfToken()
+	    		});
+		    }
 	    });   
     });
 })

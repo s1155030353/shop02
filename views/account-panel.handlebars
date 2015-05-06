@@ -1,0 +1,167 @@
+<article id="main">
+
+    <section id="categoryPanel" class="panel">
+
+        <fieldset id="logout">
+            <form method="GET" action="/admin/logout">
+                <input type="submit" value="Log out" />
+            </form>
+        </fieldset>
+
+        <fieldset id="categoryNewPanel">
+            <legend>New Category</legend>
+            <form method="POST" action="/admin/api/cat/add">
+                <label for="catNewName">Name *</label>
+                <div><input id="catNewName" type="text" name="name" required pattern="^[\w- ']+$" /></div>
+                <input type="hidden" name="_csrf" value="{{csrfToken}}">
+                <input type="submit" value="Submit" />
+            </form>
+        </fieldset>
+
+        <fieldset id="categoryEditPanel">
+            <legend>Edit a Category</legend>
+            <form method="POST" action="/admin/api/cat/edit">
+                <label for="catEditCatId">Category *</label>
+                <div>
+                    <select id="catEditCatId" name="catid" required>
+                        <option value="">Please select a category</option>
+                        {{#each cat}}
+                            <option value="{{catid}}">{{name}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+                <label for="catEditName">New Name *</label>
+                <div><input id="catEditName" type="text" name="name" required pattern="^[\w- ']+$" /></div>
+                <input type="hidden" name="_csrf" value="{{csrfToken}}">
+                <input type="submit" value="Submit" />
+            </form>
+        </fieldset>
+
+        <fieldset id="categoryRemovePanel">
+            <legend>Remove a Category</legend>
+            <form method="POST" action="/admin/api/cat/remove">
+                <label for="catRemoveCatId">Category *</label>
+                <select id="catRemoveCatId" name="catid" required>
+                    <option value="">Please select a category</option>
+                    {{#each cat}}
+                        <option value="{{catid}}">{{name}}</option>
+                    {{/each}}
+                </select>
+                <input type="hidden" name="_csrf" value="{{csrfToken}}">
+                <input type="submit" value="Submit" />
+            </form>
+        </fieldset>
+    </section>
+
+    <section id="productPanel" class="panel">
+        <fieldset id="productNewPanel">
+            <legend>New Product</legend>
+            <form method="POST" action="/admin/api/prod/add" enctype="multipart/form-data">
+                <label for="prodNewCatId">Category *</label>
+                <div>
+                    <select id="catEditCatId" name="catid" required>
+                        <option value="">Please select a category</option>
+                        {{#each cat}}
+                            <option value="{{catid}}">{{name}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+
+                <label for="prodNewName">Name *</label>
+                <div><input id="prodNewName" type="text" name="name" required pattern="^[\w- ']+$" /></div>
+
+                <label for="prodNewPrice">Price *</label>
+                <div><input id="prodNewPrice" type="number" step="0.05" name="price" required pattern="^\d+(?:\.\d{1,2})?$" /></div>
+
+                <label for="prodNewDescription">Description</label>
+                <div><textarea id="prodNewDescription" name="description" pattern="^[\w- ',\r\n]+$"></textarea></div>
+
+                <label for="prodNewImage">Image *</label>
+                <div><input id="prodNewImage" type="file" name="image" required /></div>
+
+                <div id="dropBox" class="droperea" onload="upload()" >
+                    <ul id="list"></ul>
+                    <p id="texterea">Or drag your picture here to upload</p>
+                </div>
+
+                <input type="hidden" name="_csrf" value="{{csrfToken}}">
+
+                <input type="submit" value="Submit" />
+            </form>
+        </fieldset>
+
+
+        <fieldset id="productEditPanel">
+            <legend>Edit a Product</legend>
+            <form method="POST" action="/admin/api/prod/edit" enctype="multipart/form-data">
+                <label for="prodEditPId">Product *</label>
+                <div>
+
+                    <div>
+                        <select id="catEditCId" name="catid" required>
+                            <option value="">Please select a category</option>
+                            {{#each cat}}
+                                <option value="{{catid}}">{{name}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+
+                    <div>
+                        <select id="prodEditPId" name="pid" required>
+                            <option value="">Please select a product</option>
+                            {{#each prod}}
+                                <option value="{{pid}}">{{name}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+
+                    <label for="prodEditName">Name *</label>
+                    <div><input id="prodEditName" type="text" name="name" required pattern="^[\w- ']+$" /></div>
+
+                    <label for="prodEditPrice">Price *</label>
+                    <div><input id="prodEditPrice" type="number" step="0.05" name="price" required pattern="^\d+(?:\.\d{1,2})?$" /></div>
+
+                    <label for="prodEditDescription">Description</label>
+                    <div><textarea id="prodEditDescription" name="description" pattern="^[\w- ',\r\n]+$"></textarea></div>
+
+                    <label for="prodEditImage">Image *</label>
+                    <div><input id="prodEditImage" type="file" name="image" required /></div>
+                    <input type="hidden" name="_csrf" value="{{csrfToken}}">
+                </div>
+                <input type="submit" value="Submit" />
+            </form>
+        </fieldset>
+
+        <fieldset id="productRemovePanel">
+            <legend>Remove a Product</legend>
+            <form method="POST" action="/admin/api/prod/remove">
+
+                <div>
+                    <select id="catRemoveCId" name="catid" required>
+                        <option value="">Please select a category</option>
+                        {{#each cat}}
+                            <option value="{{catid}}">{{name}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+
+                <div>
+                    <select id="prodRemovePId" name="pid" required>
+                        <option value="">Please select a product</option>
+                        {{#each prod}}
+                            <option value="{{pid}}">{{name}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+                <input type="hidden" name="_csrf" value="{{csrfToken}}">
+
+                <input type="submit" value="Submit" />
+            </form>
+        </fieldset>
+        <a href="/"> Home </a>
+
+    </section>
+
+    <div class="clear"></div>
+
+</article>

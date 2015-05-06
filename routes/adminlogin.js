@@ -7,7 +7,7 @@ var config = require('../shopXX-ierg4210.config.js');
 
 var csp = require('content-security-policy');
 var session = require('express-session');
-//var RedisStore = require('connect-redis')(session);
+var RedisStore = require('connect-redis')(session);
 var csrf = require('csurf');
 var cspPolicy = {
     'Content-Security-Policy': "default-src 'self' 127.0.0.1",
@@ -29,11 +29,15 @@ var pool = anyDB.createPool(config.dbURI, {
 });
 
 app.use(session({
+//	store:new RedisStore({
+//        host:'127.0.0.1',
+//        port:'6379'
+//    }),
 	name: 'login',
 	secret: '04n4MY7jLXKlz3y17YdoSOR9o71gvH3R',
 	resave: false,
 	saveUninitialized: false,
-	cookie: { path: '/admin', maxAge: 1000*60*60*24*3, httpOnly: true }
+	cookie: { path: '/', maxAge: 1000*60*60*24*3, httpOnly: true }
 	})
 );
 /*
@@ -43,7 +47,8 @@ var inputPattern = {
 */
 // URL expected: http://hostname/login
 app.get('/', csrfProtection, function (req, res) {
-//	console.log(req);
+	console.log(req.session);
+	console.log("adminlogin");
 
 	if (req.session.admin == 1){
 //		console.log(req.session);

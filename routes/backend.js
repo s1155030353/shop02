@@ -6,12 +6,12 @@ var config = require('../shopXX-ierg4210.config.js');
 var session = require('express-session');
 var csp = require('content-security-policy');
 var csrf = require('csurf');
-//var RedisStore = require('connect-redis')(session);
+var RedisStore = require('connect-redis')(session);
 
 var cspPolicy = {
     'Content-Security-Policy': "default-src 'self' 127.0.0.1",
     'X-Content-Security-Policy': "default-src 'self' 127.0.0.1",
-    'X-WebKit-CSP': "default-src 'self' 127.0.0.1",
+    'X-WebKit-CSP': "default-src 'self' 127.0.0.1"
 };
 
 var globalCSP = csp.getCSP(cspPolicy);
@@ -43,23 +43,32 @@ app.use(session({
 
 // URL expected: http://hostname/admin
 //app.get('/', csrfProtection, function (req, res) {
-app.get('/', csrfProtection, function (req, res) {
-
+app.get('/', csrfProtection, function (req, res, next) {
+/*
 	var schema = req.headers['x-forwarded-proto'];
     if (schema === 'https') {// Redirect to https.
         res.redirect('https://' + req.headers.host + req.url);
     }
-
+*/
+/*    var schema = req.headers['x-forwarded-proto'];
+    if (schema === 'https') {
+// Already https; don't do anything special.
+        next();
+    }
+    else {
+// Redirect to https.
+        res.redirect('https://' + req.headers.host + req.url + 'admin');
+    }
+*/
+    console.log(req.session);
+    console.log("backend");
 	if (!req.session){
 		res.redirect('/admin/login');
 		return;
 	}
-	if (!req.session.admin){
-		res.redirect('/admin/login');		
+	if (req.session.admin != 1){
+		res.redirect('/admin/login');
 		return;
-	}
-	if (req.session.admin == 0){
-		res.redirect('/');
 	}
 
 	// async fetch data from SQL, render page when ready

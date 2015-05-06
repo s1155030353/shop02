@@ -12,7 +12,7 @@ product={
     pid:0, 
     name:"", 
     quan:0, 
-    price:0.00, 
+    price:0.00
 };
 
 orderdetail={ 
@@ -155,9 +155,22 @@ function showShoppingCart(e) {
 
 function sendShoppingcart(e){
     var cart = JSON.parse(utils.getParam('ShoppingCart'));
-    
+    //cart = [{pid:1,quan:1},{pid:2,quan:2}];
+    $.ajax('/checkout', {
+        type: 'POST',
+        dataType: 'json',
+        data: { shoppinglist: cart },
+        success: function(url){
+            console.log(url);
+            window.location.href=url;
+        }
+    });
 }
 
 $(document).ready(function () {
     $('#cart').hover(showShoppingCart);
+});
+
+$(document).ready(function(){
+    $('#checkout').on("click" ,sendShoppingcart);
 });
